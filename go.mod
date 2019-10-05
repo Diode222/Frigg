@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	cloud.google.com/go v0.46.3 // indirect
-	github.com/Diode222/etcd_service_discovery v0.0.0-20191005164048-37e25604ffae
+	github.com/Diode222/etcd_service_discovery v0.0.0-20191006085726-279fff1e207d
 	github.com/coreos/bbolt v1.3.3 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20191001013358-cfbb681360f0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
@@ -29,6 +29,7 @@ require (
 	github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2 // indirect
 	go.etcd.io/bbolt v1.3.3 // indirect
 	golang.org/x/crypto v0.0.0-20191002192127-34f69633bfdc // indirect
+	golang.org/x/sys v0.0.0-20191005200804-aed5e4c7ecf9 // indirect
 	golang.org/x/time v0.0.0-20190921001708-c4c64cad1fd0 // indirect
 	google.golang.org/appengine v1.6.4 // indirect
 	google.golang.org/grpc v1.24.0

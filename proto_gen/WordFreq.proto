@@ -18,6 +18,7 @@ message PartOfSpeech {
         VERB = 1;
         ADJECTIVE = 2;
         PHRASE = 3;
+        UNKNOWN = 4;
     }
 
     required POSType type = 1;

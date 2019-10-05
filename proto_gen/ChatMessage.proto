@@ -2,10 +2,18 @@ syntax = "proto2";
 
 package proto_gen;
 
+import "WordFreq.proto";
+
+message WordAndPos {
+    required string word = 1;
+    required PartOfSpeech pos = 2;
+}
+
 message ChatMessage {
     required string message = 1;
     required int64 time = 2;
     required string chatPerson = 3;
+    repeated WordAndPos wordAndPosList = 4;
 }
 
 message ChatMessageList {
@@ -18,4 +26,8 @@ message ChatMessageListServiceStatus {
 
 service ChatMessageListService {
     rpc PutChatMessageList(ChatMessageList) returns (ChatMessageListServiceStatus) {}
+}
+
+service WordSplitService {
+    rpc GetWordSplittedMessageList(ChatMessageList) returns (ChatMessageList) {}
 }

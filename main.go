@@ -6,7 +6,7 @@ import (
 	"github.com/Diode222/Frigg/manager"
 	"github.com/Diode222/Frigg/model"
 	pb "github.com/Diode222/Frigg/proto_gen"
-	chatMessageListServer "github.com/Diode222/Frigg/serviceServer"
+	"github.com/Diode222/Frigg/serviceServer"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"google.golang.org/grpc"
@@ -34,9 +34,9 @@ func initService() {
 	grpcServer := grpc.NewServer()
 	defer grpcServer.GracefulStop()
 
-	pb.RegisterWordFreqListServiceServer(grpcServer, chatMessageListServer.NewWordFreqListServer())
-	pb.RegisterChatMessageListServiceServer(grpcServer, chatMessageListServer.NewChatMessageListServer())
-	err := manager.GetServiceManger(conf.ETCD_ADDRESS).Register(conf.SERVICE_NAME, conf.SERVICE_IP, conf.SERVICE_PORT, grpcServer, conf.TTL)
+	pb.RegisterWordFreqListServiceServer(grpcServer, serviceServer.NewWordFreqListServer())
+	pb.RegisterChatMessageListServiceServer(grpcServer, serviceServer.NewChatMessageListServer())
+	err := manager.GetServiceManger(conf.ETCD_ADDRESS).Register(conf.SERVICE_NAME, conf.LISTEN_IP, conf.SERVICE_IP, conf.SERVICE_PORT, grpcServer, conf.TTL)
 	if err != nil {
 		log.Printf(fmt.Sprintf("Register service to etcd failed, err: %s", err.Error()))
 		panic(err)
