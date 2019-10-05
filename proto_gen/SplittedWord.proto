@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+package proto_gen;
+
+import "ChatMessageTmp.proto";
+
+// 每个聊天消息只有一个句子，这个句子被分词后会重新组装成一个SplittedMessage，其中wordList表示句子分词得到的词语切片
+message SplittedMessage {
+    repeated string wordList = 1;
+    required int64 time = 2;
+    required string chatPerson = 3;
+}
+
+message SplittedMessageList {
+    repeated SplittedMessage splittedMessages = 1;
+}
+
+service WordSplitService {
+    rpc GetSplittedMessage(ChatMessageList) returns (SplittedMessageList) {}
+}

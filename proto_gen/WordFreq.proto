@@ -1,0 +1,28 @@
+syntax = "proto2";
+
+package proto_gen;
+
+message WordFreq {
+    required string word = 1;
+    required int32 count = 2;
+}
+
+message WordFreqList {
+    repeated WordFreq wordFreqs = 1;
+}
+
+message PartOfSpeech {
+    enum POSType
+    {
+        NOUN = 0;
+        VERB = 1;
+        ADJECTIVE = 2;
+        PHRASE = 3;
+    }
+
+    required POSType type = 1;
+}
+
+service WordFreqListService {
+    rpc GetWordFreqList(PartOfSpeech) returns (WordFreqList) {}
+}
