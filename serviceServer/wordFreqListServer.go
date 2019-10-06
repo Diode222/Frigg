@@ -48,19 +48,23 @@ func (s *wordFreqListServer) GetWordFreqList(contex context.Context, pos *pb.Par
 		return wordFreqList, err
 	}
 
-	var word string
-	var count int32
 	for rows.Next() {
+		var word string
+		var count int32
 		if err := rows.Scan(&word, &count); err != nil {
-			fmt.Println(err.Error())
+			log.Println(fmt.Sprintf("Mysql rows scan err, err: %s ", err.Error()))
 			continue
 		}
+
+		log.Println(fmt.Sprintf("get word freq item from mysql, word: %s, count: %d", word, count))
 
 		wordFreqList.WordFreqs = append(wordFreqList.WordFreqs, &pb.WordFreq{
 			Word:                 &word,
 			Count:                &count,
 		})
 	}
+
+	log.Println("response wordFreqList length: ", len(wordFreqList.WordFreqs))
 
 	return wordFreqList, nil
 }

@@ -25,6 +25,36 @@ func initMysql() {
 	db.InitDB(sqlInfo)
 	dbInstance := db.GetDB()
 	dbInstance.Mysql.AutoMigrate(&model.WordFreqItem{})
+
+	//item := model.WordFreqItem{
+	//	Word:       "利物浦",
+	//	Pos:        0,
+	//	ChatPerson: "为什么",
+	//	Sentence:   "利物浦是冠军",
+	//	SendTime:   157984234239,
+	//}
+	//errs := dbInstance.Mysql.Create(&item).GetErrors()
+	//if len(errs) > 0 {
+	//	fmt.Println("got errors, errs: ", errs)
+	//}
+	//
+	//rows, err := dbInstance.Mysql.Table(conf.WORDFREQ_TABLE_NAME).Select("word, count(*) as count").
+	//	Where("pos = ?", model.NOUN).Group("word").Limit(80).Order("count DESC").Rows()
+	//if err != nil {
+	//	log.Println(fmt.Sprintf("Mysql select from table %s failed, dbname: %s", conf.WORDFREQ_TABLE_NAME, conf.MYSQL_DBNAME))
+	//}
+	//
+	//var word string
+	//var count int32
+	//for rows.Next() {
+	//	if err := rows.Scan(&word, &count); err != nil {
+	//		fmt.Println(err.Error())
+	//		continue
+	//	}
+	//
+	//	fmt.Println(word)
+	//	fmt.Println(count)
+	//}
 }
 
 func initService() {

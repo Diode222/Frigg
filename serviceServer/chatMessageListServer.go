@@ -24,10 +24,15 @@ func NewChatMessageListServer() *chatMessageListServer {
 func (s *chatMessageListServer) PutChatMessageList(context context.Context, chatMessageList *pb.ChatMessageList) (*pb.ChatMessageListServiceStatus, error) {
 	dbInstance := db.GetDB()
 
+	log.Println("frigg get chatMessageList length: ", len(chatMessageList.GetChatMessages()))
+
 	for _, chatMessage := range chatMessageList.GetChatMessages() {
 		msg := chatMessage.GetMessage()
 		time := chatMessage.GetTime()
 		chatPerson := chatMessage.GetChatPerson()
+
+		log.Println("get chat messsage wordAndPosList length: ", len(chatMessage.GetWordAndPosList()))
+
 		for _, wordAndPos := range chatMessage.GetWordAndPosList() {
 			word := wordAndPos.GetWord()
 			pos := model.UNKNOWN
@@ -49,7 +54,7 @@ func (s *chatMessageListServer) PutChatMessageList(context context.Context, chat
 				Sentence:   msg,
 				SendTime:   time,
 			}
-			errs := dbInstance.Mysql.Create(wordFreqItem).GetErrors()
+			errs := dbInstance.Mysql.Create(&wordFreqItem).GetErrors()
 			if len(errs) > 0 {
 				log.Printf("Mysql insert got errors, ", errs)
 			}
