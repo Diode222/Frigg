@@ -2,7 +2,8 @@ package serviceServer
 
 import (
 	"context"
-	"fmt"
+	"github.com/Diode222/Frigg/db"
+	"github.com/Diode222/Frigg/model"
 	pb "github.com/Diode222/Frigg/proto_gen"
 	"log"
 	"sync"
@@ -21,19 +22,40 @@ func NewChatMessageListServer() *chatMessageListServer {
 }
 
 func (s *chatMessageListServer) PutChatMessageList(context context.Context, chatMessageList *pb.ChatMessageList) (*pb.ChatMessageListServiceStatus, error) {
-	// TODO save data to db
-	log.Printf("PutChatMessageList 收到了请求")
-	for _, msg := range chatMessageList.GetChatMessages() {
-		fmt.Println(msg.GetMessage())
-		fmt.Println(msg.GetTime())
-		fmt.Println(msg.GetChatPerson())
-		fmt.Println(">>>>>>>>>>>>>")
-		for _, wordAndPos := range msg.WordAndPosList {
-			fmt.Println(wordAndPos.GetWord())
-			fmt.Println(wordAndPos.GetPos().GetType().Enum().String())
+	dbInstance := db.GetDB()
+
+	for _, chatMessage := range chatMessageList.GetChatMessages() {
+		msg := chatMessage.GetMessage()
+		time := chatMessage.GetTime()
+		chatPerson := chatMessage.GetChatPerson()
+		for _, wordAndPos := range chatMessage.GetWordAndPosList() {
+			word := wordAndPos.GetWord()
+			pos := model.UNKNOWN
+			switch wordAndPos.GetPos().GetType() {
+			case pb.PartOfSpeech_NOUN:
+				pos = model.NOUN
+			case pb.PartOfSpeech_VERB:
+				pos = model.VERB
+			case pb.PartOfSpeech_ADJECTIVE:
+				pos = model.ADJECTIVE
+			case pb.PartOfSpeech_PHRASE:
+				pos = model.PHRASE
+			}
+
+			wordFreqItem := model.WordFreqItem{
+				Word:       word,
+				Pos:        pos,
+				ChatPerson: chatPerson,
+				Sentence:   msg,
+				SendTime:   time,
+			}
+			errs := dbInstance.Mysql.Create(wordFreqItem).GetErrors()
+			if len(errs) > 0 {
+				log.Printf("Mysql insert got errors, ", errs)
+			}
 		}
-		fmt.Println(">>>>>>>>>>>>>")
 	}
+
 	ok := true
 	return &pb.ChatMessageListServiceStatus{
 		OK: &ok,
