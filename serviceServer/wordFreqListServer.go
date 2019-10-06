@@ -56,15 +56,13 @@ func (s *wordFreqListServer) GetWordFreqList(contex context.Context, pos *pb.Par
 			continue
 		}
 
-		log.Println(fmt.Sprintf("get word freq item from mysql, word: %s, count: %d", word, count))
-
 		wordFreqList.WordFreqs = append(wordFreqList.WordFreqs, &pb.WordFreq{
 			Word:                 &word,
 			Count:                &count,
 		})
 	}
 
-	log.Println("response wordFreqList length: ", len(wordFreqList.WordFreqs))
+	log.Println("Response wordFreqList length: ", len(wordFreqList.WordFreqs))
 
 	return wordFreqList, nil
 }
